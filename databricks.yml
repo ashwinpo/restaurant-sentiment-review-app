@@ -1,0 +1,68 @@
+bundle:
+  name: bloomin_review_app
+
+# Note: Table configuration (catalog, schema, table names) is managed in app.yaml
+# Update app.yaml directly for different client environments
+
+# Define targets for different environments
+targets:
+  # Development target (your current setup)
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://e2-demo-field-eng.cloud.databricks.com  # Replace with your workspace URL
+    
+    resources:
+      apps:
+        bloomin_review:
+          name: "bloomin-review-dev"
+          description: "Bloomin Brands Review Validation App - Development"
+          source_code_path: .
+          # Configuration is in app.yaml - update table names there for different environments
+          permissions:
+            - user_name: ashwin.pothukuchi@databricks.com  # Replace with your email
+              level: CAN_MANAGE
+  
+  # Production/Staging target
+  prod:
+    mode: production
+    workspace:
+      host: https://e2-demo-field-eng.cloud.databricks.com  # Replace with your workspace URL
+    
+    resources:
+      apps:
+        bloomin_review:
+          name: "bloomin-review-prod"
+          description: "Bloomin Brands Review Validation App - Production"
+          source_code_path: .
+          # Configuration is in app.yaml - update table names there for different environments
+          permissions:
+            - group_name: "users"  # Adjust based on your org structure
+              level: CAN_VIEW
+            - user_name: ashwin.pothukuchi@databricks.com
+              level: CAN_MANAGE
+  
+  # Client environment template (customize per client)
+  client:
+    mode: production
+    workspace:
+      host: https://client-workspace.cloud.databricks.com  # Client's workspace URL
+    
+    resources:
+      apps:
+        bloomin_review:
+          name: "bloomin-review-client"
+          description: "Bloomin Brands Review Validation App - Client Environment"
+          source_code_path: .
+          # Configuration is in app.yaml - update table names there for different environments
+          permissions:
+            - group_name: "client_admins"
+              level: CAN_MANAGE
+            - group_name: "client_users"
+              level: CAN_VIEW
+
+# Workspace configuration (shared across all targets)
+workspace:
+  file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+

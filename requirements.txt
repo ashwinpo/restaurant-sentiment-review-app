@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+databricks-sdk==0.64.0
+openai==1.109.1
+databricks-sdk[openai]
+databricks-sql-connector
+python-dotenv
+pytest
+pytest-cov
+httpx
